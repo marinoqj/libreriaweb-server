@@ -1,2 +1,2 @@
 # libreriaweb-server
-Servidor que publica un REST API
+Parte servidora. Expone el modelo mediante un API REST.
