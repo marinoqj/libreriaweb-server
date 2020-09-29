@@ -7,6 +7,6 @@ import es.golemdr.libreriaweb.server.domain.Cliente;
 
 
 @Repository
-public interface ClientesRepository extends JpaRepository<Cliente, Long>{
+public interface ClientesRepository extends JpaRepository<Cliente, Long>, ClientesRepositoryCustom{
 
 }

@@ -9,6 +9,8 @@ public class UrlConstants {
 	public static final String PEDIDOS_BUSCAR = "/pedidos/buscar";
 	
 	public static final String CLIENTES = "/clientes";
-	public static final String CLIENTES_BUSCAR_DNI = CLIENTES + "/buscar/{dni}";
+	public static final String CLIENTES_BUSCAR = "/clientes/buscar";
+	public static final String CLIENTES_PAGINADO = "/clientes/paginado";
+	public static final String CLIENTES_BUSCAR_DNI = "/clientes/buscar/{dni}";
 
 }

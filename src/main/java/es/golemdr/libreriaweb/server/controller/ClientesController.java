@@ -3,6 +3,7 @@ package es.golemdr.libreriaweb.server.controller;
 import java.util.List;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -12,15 +13,19 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import es.golemdr.libreriaweb.server.controller.constantes.UrlConstants;
 import es.golemdr.libreriaweb.server.domain.Cliente;
+import es.golemdr.libreriaweb.server.domain.Pedido;
 import es.golemdr.libreriaweb.server.domain.Producto;
 import es.golemdr.libreriaweb.server.service.ClientesService;
 
@@ -73,5 +78,31 @@ public class ClientesController {
 
 		return resultado;
 	}
+	
+	@PostMapping(UrlConstants.CLIENTES_BUSCAR)
+	public List<Cliente> buscarClientes(@RequestBody Cliente filtro) throws JsonProcessingException {
+		
+		List<Cliente> resultado = null;
+		
+		resultado = clientesService.findClientes(filtro);
+		
+		
+		return resultado;
+	}
 
+	@GetMapping(UrlConstants.CLIENTES_PAGINADO)
+	public List<Cliente> listadoClientesPaginados(@RequestHeader("Paginacion-Inicio") int inicio, @RequestHeader("Paginacion-ElementosPagina") int elementosXpagina,
+			HttpServletResponse response) throws JsonProcessingException {
+		
+		List<Cliente> resultado = null;
+		resultado = clientesService.getClientes(inicio, elementosXpagina);
+
+		int total = 0;
+		total = clientesService.getTotalClientes();
+		response.addHeader("Paginacion-Total", String.valueOf(total));
+		
+		return resultado;
+	}
+	
 }
+;
