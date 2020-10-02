@@ -14,7 +14,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -25,10 +24,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import es.golemdr.libreriaweb.server.controller.constantes.UrlConstants;
 import es.golemdr.libreriaweb.server.domain.Cliente;
-import es.golemdr.libreriaweb.server.domain.Pedido;
-import es.golemdr.libreriaweb.server.domain.Producto;
+import es.golemdr.libreriaweb.server.ext.Constantes;
 import es.golemdr.libreriaweb.server.service.ClientesService;
-
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;;
 
 
 @RestController
@@ -41,18 +40,6 @@ public class ClientesController {
 	
 	@Resource
 	private ClientesService clientesService;
-	
-	@GetMapping(UrlConstants.CLIENTES)
-	public @ResponseBody List<Cliente> listadoClientes() {
-		
-		List<Cliente> clientes = null;
-		clientes = clientesService.getClientes();
-		
-		log.debug("Hemos encontrado " + clientes.size() + " clientes");
-		
-		return clientes;		
-	}	
-	
 	
 	@GetMapping(UrlConstants.CLIENTES_BUSCAR_DNI)
 	public ResponseEntity<?> buscarClienteDNI(@PathVariable("dni") String dni) {
@@ -79,6 +66,7 @@ public class ClientesController {
 		return resultado;
 	}
 	
+
 	@PostMapping(UrlConstants.CLIENTES_BUSCAR)
 	public List<Cliente> buscarClientes(@RequestBody Cliente filtro) throws JsonProcessingException {
 		
@@ -91,7 +79,8 @@ public class ClientesController {
 	}
 
 	@GetMapping(UrlConstants.CLIENTES_PAGINADO)
-	public List<Cliente> listadoClientesPaginados(@RequestHeader("Paginacion-Inicio") int inicio, @RequestHeader("Paginacion-ElementosPagina") int elementosXpagina,
+	public List<Cliente> listadoClientesPaginado(@RequestHeader(Constantes.PAGINACION_INICIO) int inicio, 
+			@RequestHeader(Constantes.PAGINACION_ELEMENTOS_PAGINA) int elementosXpagina,
 			HttpServletResponse response) throws JsonProcessingException {
 		
 		List<Cliente> resultado = null;
@@ -99,7 +88,7 @@ public class ClientesController {
 
 		int total = 0;
 		total = clientesService.getTotalClientes();
-		response.addHeader("Paginacion-Total", String.valueOf(total));
+		response.addHeader(Constantes.PAGINACION_TOTAL, String.valueOf(total));
 		
 		return resultado;
 	}

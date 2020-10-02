@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import es.golemdr.libreriaweb.server.domain.Cliente;
@@ -42,6 +44,20 @@ public class PedidosService {
 	public List<Pedido> getPedidos(){
 		
 		return pedidosRepository.findAll();
+		
+	}
+	
+	public List<Pedido> getPedidos(int inicio, int elementosXpagina){
+		
+		Pageable paginacion = PageRequest.of(inicio,elementosXpagina);
+		
+		return pedidosRepository.findAll(paginacion).getContent();
+		
+	}
+	
+	public int getTotalPedidos(){
+		
+		return pedidosRepository.findAll().size();
 		
 	}
 

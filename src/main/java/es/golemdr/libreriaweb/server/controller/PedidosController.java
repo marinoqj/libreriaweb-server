@@ -4,6 +4,7 @@ import java.sql.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -14,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -23,6 +25,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import es.golemdr.libreriaweb.server.controller.constantes.UrlConstants;
 import es.golemdr.libreriaweb.server.domain.Cliente;
 import es.golemdr.libreriaweb.server.domain.Pedido;
+import es.golemdr.libreriaweb.server.ext.Constantes;
 import es.golemdr.libreriaweb.server.service.PedidosService;
 
 
@@ -63,7 +66,7 @@ public class PedidosController {
 		return pedidos;
 	}
 
-	
+	// TODO - Quitar si no se usa
 	@GetMapping(UrlConstants.PEDIDOS)
 	public @ResponseBody List<Pedido> listadoPedidos() {
 		
@@ -73,5 +76,20 @@ public class PedidosController {
 		log.debug("Hemos encontrado " + pedidos.size() + " pedidos");
 		
 		return pedidos;		
-	}	
+	}
+	
+	@GetMapping(UrlConstants.PEDIDOS_PAGINADO)
+	public List<Pedido> listadoPedidosPaginado(@RequestHeader(Constantes.PAGINACION_INICIO) int inicio, 
+			@RequestHeader(Constantes.PAGINACION_ELEMENTOS_PAGINA) int elementosXpagina,
+			HttpServletResponse response) throws JsonProcessingException {
+		
+		List<Pedido> resultado = null;
+		resultado = pedidosService.getPedidos(inicio, elementosXpagina);
+
+		int total = 0;
+		total = pedidosService.getTotalPedidos();
+		response.addHeader(Constantes.PAGINACION_TOTAL, String.valueOf(total));
+		
+		return resultado;
+	}
 }
