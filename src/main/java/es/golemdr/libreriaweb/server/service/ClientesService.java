@@ -9,9 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import es.golemdr.libreriaweb.server.domain.Cliente;
-import es.golemdr.libreriaweb.server.domain.Producto;
 import es.golemdr.libreriaweb.server.repository.ClientesRepository;
-import es.golemdr.libreriaweb.server.repository.ProductosRepository;
 
 
 
