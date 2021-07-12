@@ -21,7 +21,7 @@ public class PedidosService {
 
 		
 	@Autowired
-	private PedidosRepository pedidosRepository;
+	private PedidosRepository pedidosRepository; 
 	
 	@Autowired
 	private ClientesRepository clientesRepository;

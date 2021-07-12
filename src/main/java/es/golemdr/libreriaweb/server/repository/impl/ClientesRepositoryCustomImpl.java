@@ -29,7 +29,7 @@ public class ClientesRepositoryCustomImpl implements ClientesRepositoryCustom{
 		CriteriaQuery<Cliente> query = cb.createQuery(Cliente.class);
 		Root<Cliente> cliente = query.from(Cliente.class);		
 
-		List<Predicate> predicates = new ArrayList<Predicate>();
+		List<Predicate> predicates = new ArrayList<>();
 		if(filtro.getNombre() != null){
 		    Predicate condition = cb.like(cliente.<String>get("nombre"),"%"+filtro.getNombre()+"%");
 		    predicates.add(condition);
